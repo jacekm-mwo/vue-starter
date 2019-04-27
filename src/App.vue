@@ -6,14 +6,23 @@
     
     <p> {{ email }} </p>
    
-    <div v-if="loggedInVar">
-	    <p> zalogowany jako {{ email }} </p>
-	    <button @click="loggedOut">wyloguj</button>
-	    
+    <div v-if="email.length > 0">
+    <logged-in-page :username="email"
+                     @logout="loggedOut()" > </logged-in-page>
+                     
     </div>
     <div v-else>
 
-		<login-form @login="loggedIn($event)"></login-form>
+		<login-form @login="loggedIn($event)":button-label="'klikaj'"
+		:header="'header1'"></login-form>
+		
+		<login-form @login="enter($event)" :button-label="'Wleæ'"
+		:header="'head'"></login-form>
+
+		
+        <login-form @login="enter($event)":button-label="'Zaloguj siê jak cz³owiek'"
+         :header="'last'"></login-form>
+
     </div>
     
 </div>
@@ -25,13 +34,14 @@
 
 import "milligram";
 import LoginForm from "./LoginForm";
-
+import LoggedInPage from "./LoggedInPage";
 
 export default {
-	components: {LoginForm},
+	components: {LoginForm, LoggedInPage}, 
+	
 	data() {
 		  return {
-		    email: 'jacek@jacekm.com',
+		    email: '',
 		    password: '',
 		    loggedInVar: false
 		  };
@@ -48,6 +58,7 @@ export default {
 			  },
 		  loggedOut(){
 				  this.loggedInVar = false;
+				  this.email = '';
 			  }
 		}
 		
